@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, Zap, Globe, Activity } from 'lucide-react';
+import { Shield, Zap, Globe, Activity, CheckCircle, AlertTriangle, Database, Wifi } from 'lucide-react';
 
 type Feature = {
   icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -14,35 +14,35 @@ const ProductionFeatures: React.FC = () => {
   const features: Feature[] = [
     {
       icon: Shield,
-      title: 'Enterprise Security',
+      title: 'Production Security',
       description:
-        'Bank-level security with end-to-end encryption, secure authentication, and data protection.',
+        'Production-grade security with RLS policies, secure authentication, and data protection.',
       color: 'from-blue-500 to-blue-600',
-      stats: { uptime: '99.9%', security: 'A+', compliance: 'SOC 2' },
+      stats: { uptime: '99.9%', security: 'RLS', compliance: 'GDPR' },
     },
     {
       icon: Zap,
-      title: 'Lightning Performance',
+      title: 'Optimized Performance',
       description:
-        'Optimized for speed with CDN delivery, caching strategies, and performance monitoring.',
+        'Optimized for speed with lazy loading, caching strategies, and performance monitoring.',
       color: 'from-yellow-500 to-orange-500',
-      stats: { loadTime: '<2s', performance: '95+', optimization: 'A+' },
+      stats: { loadTime: '<2s', performance: '95+', optimization: 'PWA' },
     },
     {
       icon: Globe,
-      title: 'Global Accessibility',
+      title: 'Full Accessibility',
       description:
-        'WCAG 2.1 compliant with multi-language support and responsive design for all devices.',
+        'WCAG 2.1 AA compliant with multi-language support and responsive design for all devices.',
       color: 'from-green-500 to-emerald-500',
-      stats: { accessibility: 'AAA', languages: '3+', devices: '100%' },
+      stats: { accessibility: 'AA', languages: '2', devices: '100%' },
     },
     {
       icon: Activity,
       title: 'Real-time Analytics',
       description:
-        'Comprehensive analytics dashboard with real-time monitoring and detailed insights.',
+        'Built-in analytics with real-time monitoring and performance insights.',
       color: 'from-purple-500 to-indigo-500',
-      stats: { tracking: '24/7', insights: 'Real-time', reports: 'Custom' },
+      stats: { tracking: '24/7', insights: 'Live', reports: 'Built-in' },
     },
   ];
 

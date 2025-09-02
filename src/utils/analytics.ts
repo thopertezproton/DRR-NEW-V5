@@ -101,8 +101,12 @@ class AnalyticsManager {
     this.events = [];
 
     try {
-      // In production, send to your analytics service
-      console.log('Analytics events:', eventsToSend);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Analytics events:', eventsToSend);
+      } else {
+        // In production, send to your analytics service
+        // Example: Google Analytics, Mixpanel, etc.
+      }
       
       // Store locally for now
       const existingEvents = JSON.parse(localStorage.getItem('analytics_events') || '[]');

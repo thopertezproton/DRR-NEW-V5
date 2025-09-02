@@ -25,12 +25,15 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('Error caught by boundary:', error, errorInfo);
     this.setState({ error, errorInfo });
     
-    // Log error for production monitoring
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'exception', {
-        description: error.toString(),
-        fatal: false
-      });
+    // Log error for production monitoring only in production
+    if (process.env.NODE_ENV === 'production') {
+      // Send to monitoring service (Sentry, LogRocket, etc.)
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'exception', {
+          description: error.toString(),
+          fatal: false
+        });
+      }
     }
   }
 

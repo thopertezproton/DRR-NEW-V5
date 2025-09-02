@@ -38,7 +38,9 @@ export function useSupabaseConnection(): DatabaseContextType {
         setIsConnected(true);
         setConnectionError(null);
         connectionRetryCountRef.current = 0;
-        window.dispatchEvent(new CustomEvent('database-connected'));
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('database-connected'));
+        }
         startHealthMonitoring();
       } else {
         throw new Error(health.message);
@@ -46,7 +48,9 @@ export function useSupabaseConnection(): DatabaseContextType {
     } catch (err) {
       setIsConnected(false);
       setConnectionError(err instanceof Error ? err.message : 'Unknown error');
-      window.dispatchEvent(new CustomEvent('database-disconnected'));
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('database-disconnected'));
+      }
       scheduleReconnect();
     } finally {
       setIsReconnecting(false);

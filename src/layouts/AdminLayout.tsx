@@ -35,10 +35,18 @@ const AdminLayout: React.FC = () => {
   const { notifications, removeNotification } = useNotifications();
   const location = useLocation();
   const navigate = useNavigate();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      navigate('/admin/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   const menuItems = [
@@ -175,10 +183,10 @@ const AdminLayout: React.FC = () => {
             <button
               onClick={handleLogout}
               className="flex items-center w-full px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-blue-700 rounded transition-colors"
-              disabled={loading}
+              disabled={isLoggingOut}
             >
               <LogOut className="mr-2 h-4 w-4" />
-              {loading ? 'Signing out...' : 'Logout'}
+              {isLoggingOut ? 'Signing out...' : 'Logout'}
             </button>
           </div>
         </div>

@@ -149,22 +149,30 @@ export class DatabaseManager {
 
   async reconnectWithRetry(): Promise<boolean> {
     for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
-      console.log(`🔄 Reconnection attempt ${attempt}/${this.maxRetries}`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Reconnection attempt ${attempt}/${this.maxRetries}`);
+      }
       
       const success = await this.testConnection();
       if (success) {
-        console.log('✅ Reconnection successful');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✅ Reconnection successful');
+        }
         return true;
       }
       
       if (attempt < this.maxRetries) {
         const delay = this.retryDelay * attempt;
-        console.log(`⏳ Waiting ${delay}ms before next attempt`);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`⏳ Waiting ${delay}ms before next attempt`);
+        }
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
     
-    console.error('❌ All reconnection attempts failed');
+    if (process.env.NODE_ENV === 'development') {
+      console.error('❌ All reconnection attempts failed');
+    }
     return false;
   }
   getConnectionStatus(): boolean {

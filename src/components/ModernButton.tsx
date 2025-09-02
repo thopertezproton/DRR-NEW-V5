@@ -85,11 +85,12 @@ const ModernButton: React.FC<ModernButtonProps> = ({
         ${fullWidth ? 'w-full' : ''}
         ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         flex items-center justify-center gap-3
+        gpu-accelerated
         ${className}
       `}
     >
       {loading && (
-        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current gpu-accelerated"></div>
       )}
       
       {Icon && iconPosition === 'left' && !loading && (

@@ -64,6 +64,7 @@ const ModernCard: React.FC<ModernCardProps> = ({
         rounded-2xl
         transition-all
         duration-500
+        gpu-accelerated
         ${className}
       `}
     >

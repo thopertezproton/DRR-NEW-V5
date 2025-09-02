@@ -75,6 +75,26 @@ export const validateFileUpload = (
 ): { valid: boolean; error?: string } => {
   const { maxSize = 5 * 1024 * 1024, allowedTypes = ['image/*'], maxFiles = 1 } = options;
 
+  // Additional security checks for production
+  if (process.env.NODE_ENV === 'production') {
+    // Check for potentially malicious file names
+    if (file.name.includes('..') || file.name.includes('/') || file.name.includes('\\')) {
+      return {
+        valid: false,
+        error: 'Invalid file name'
+      };
+    }
+    
+    // Check for executable file extensions
+    const dangerousExtensions = ['.exe', '.bat', '.cmd', '.scr', '.pif', '.com'];
+    if (dangerousExtensions.some(ext => file.name.toLowerCase().endsWith(ext))) {
+      return {
+        valid: false,
+        error: 'File type not allowed for security reasons'
+      };
+    }
+  }
+
   if (file.size > maxSize) {
     return {
       valid: false,

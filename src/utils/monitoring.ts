@@ -118,6 +118,11 @@ class MonitoringService {
     this.errorCount++;
     this.recentErrors.push(error);
     
+    // Log error appropriately based on environment
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Monitoring service recorded error:', error);
+    }
+    
     // Keep only last 10 errors
     if (this.recentErrors.length > 10) {
       this.recentErrors = this.recentErrors.slice(-10);

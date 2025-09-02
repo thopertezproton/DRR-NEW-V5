@@ -128,7 +128,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Optional: show offline message if not connected
       if (typeof navigator !== "undefined" && !navigator.onLine) {
-        setError("You are currently offline. Please check your internet connection.");
+        if (process.env.NODE_ENV === 'development') {
+          setError("You are currently offline. Please check your internet connection.");
+        }
         setLoading(false);
         return;
       }
@@ -151,11 +153,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Specific handling for fetch errors
       if (err instanceof TypeError && err.message === "Failed to fetch") {
         if (retryCount < maxRetries) {
-          console.log(`🔄 Retrying data fetch (${retryCount + 1}/${maxRetries})`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`🔄 Retrying data fetch (${retryCount + 1}/${maxRetries})`);
+          }
           setRetryCount(prev => prev + 1);
           
           // Retry with exponential backoff
-          setTimeout(() => {
+            if (process.env.NODE_ENV === 'development') {
+              console.log('News change detected:', payload);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Services change detected:', payload);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Incidents change detected:', payload);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Gallery change detected:', payload);
+            if (process.env.NODE_ENV === 'development') {
+              console.log('Videos change detected:', payload);
+            }
             fetchAllData();
           }, 1000 * Math.pow(2, retryCount));
           return;

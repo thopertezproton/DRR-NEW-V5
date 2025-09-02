@@ -57,7 +57,9 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       .channel('pages_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'pages' }, 
         (payload) => {
-          console.log('Pages change detected:', payload);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Pages change detected:', payload);
+          }
           fetchAllData();
         }
       )
@@ -67,7 +69,9 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       .channel('resources_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'resources' }, 
         (payload) => {
-          console.log('Resources change detected:', payload);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Resources change detected:', payload);
+          }
           fetchAllData();
         }
       )
@@ -129,7 +133,9 @@ export const PagesProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       
       if (err instanceof TypeError && err.message === "Failed to fetch") {
         if (retryCount < maxRetries) {
-          console.log(`🔄 Retrying pages data fetch (${retryCount + 1}/${maxRetries})`);
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`🔄 Retrying pages data fetch (${retryCount + 1}/${maxRetries})`);
+          }
           setRetryCount(prev => prev + 1);
           
           // Retry with exponential backoff

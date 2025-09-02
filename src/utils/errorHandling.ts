@@ -65,8 +65,14 @@ export const retryOperation = async <T>(
 };
 
 export const logError = (error: Error, context: string) => {
-  console.error(`[${context}] ${error.name}: ${error.message}`, {
-    stack: error.stack,
-    timestamp: new Date().toISOString()
-  });
+  if (process.env.NODE_ENV === 'development') {
+    console.error(`[${context}] ${error.name}: ${error.message}`, {
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+  } else {
+    // In production, send to monitoring service
+    // Example: Sentry, LogRocket, etc.
+    console.error(`[${context}] ${error.name}: ${error.message}`);
+  }
 };

@@ -79,7 +79,9 @@ const testConnection = async (retryCount = 0): Promise<boolean> => {
 
     isConnected = true;
     connectionRetries = 0;
-    console.log('✅ Supabase connection established');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Supabase connection established');
+    }
     
     // Dispatch custom event for connection status
     window.dispatchEvent(new CustomEvent('supabase-connected', { detail: { connected: true } }));
@@ -89,7 +91,9 @@ const testConnection = async (retryCount = 0): Promise<boolean> => {
     
     return true;
   } catch (error) {
-    console.error(`❌ Supabase connection failed (attempt ${retryCount + 1}):`, error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`❌ Supabase connection failed (attempt ${retryCount + 1}):`, error);
+    }
     isConnected = false;
     
     // Retry connection with exponential backoff
@@ -97,13 +101,17 @@ const testConnection = async (retryCount = 0): Promise<boolean> => {
       connectionRetries = retryCount + 1;
       const delay = baseRetryDelay * Math.pow(2, retryCount);
       
-      console.log(`🔄 Retrying connection in ${delay}ms...`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🔄 Retrying connection in ${delay}ms...`);
+      }
       
       reconnectTimeout = setTimeout(() => {
         testConnection(retryCount + 1);
       }, delay);
     } else {
-      console.warn('⚠️ Max connection retries reached - running in offline mode');
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('⚠️ Max connection retries reached - running in offline mode');
+      }
       window.dispatchEvent(new CustomEvent('supabase-disconnected', { detail: { connected: false } }));
       connectionRetries = 0; // Reset for future attempts
     }
@@ -150,7 +158,9 @@ const startHeartbeat = () => {
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        console.warn('💔 Heartbeat failed, connection lost:', errorMessage);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('💔 Heartbeat failed, connection lost:', errorMessage);
+        }
         isConnected = false;
         window.dispatchEvent(new CustomEvent('supabase-disconnected', { detail: { connected: false } }));
         
@@ -177,13 +187,17 @@ testConnection();
 // Handle network status changes
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => {
-    console.log('🌐 Network connection restored');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🌐 Network connection restored');
+    }
     connectionRetries = 0; // Reset retry count
     testConnection();
   });
   
   window.addEventListener('offline', () => {
-    console.log('📡 Network connection lost');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('📡 Network connection lost');
+    }
     isConnected = false;
     stopHeartbeat();
     if (reconnectTimeout) {
@@ -196,7 +210,9 @@ if (typeof window !== 'undefined') {
   // Handle page visibility changes
   window.addEventListener('visibilitychange', () => {
     if (!document.hidden && !isConnected && navigator.onLine) {
-      console.log('👁️ Page became visible, checking connection');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('👁️ Page became visible, checking connection');
+      }
       testConnection();
     }
   });

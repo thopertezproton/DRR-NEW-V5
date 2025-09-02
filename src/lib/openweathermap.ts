@@ -325,7 +325,9 @@ export class OpenWeatherMapAPI {
       const alerts = await this.getWeatherAlerts();
       
       // Weather data is no longer stored in database, only used for display
-      console.log('Weather data updated (display only):', weatherData);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Weather data updated (display only):', weatherData);
+      }
 
       return true;
     } catch (error) {
@@ -343,7 +345,9 @@ export class OpenWeatherMapAPI {
       }
 
       // Forecast data is no longer stored in database, only used for display
-      console.log('Forecast data synced (display only):', forecastData);
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Forecast data synced (display only):', forecastData);
+      }
 
       return true;
     } catch (error) {

@@ -61,10 +61,10 @@ const LazyImage: React.FC<LazyImageProps> = ({
   const imageSrc = hasError ? placeholder : optimizedSrc;
 
   return (
-    <div ref={imgRef} className={`relative overflow-hidden ${className}`}>
+    <div ref={imgRef} className={`relative overflow-hidden gpu-accelerated ${className}`}>
       {/* Placeholder */}
       {!isLoaded && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center gpu-accelerated">
           <div className="text-gray-400 text-sm">Loading...</div>
         </div>
       )}

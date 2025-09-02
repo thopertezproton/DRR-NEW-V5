@@ -192,9 +192,20 @@ export const injectKeyframes = () => {
 export const useGPUAcceleration = (element: HTMLElement) => {
   element.style.transform = 'translateZ(0)';
   element.style.willChange = 'transform';
+  
+  // Clean up will-change after animation
+  setTimeout(() => {
+    element.style.willChange = 'auto';
+  }, 1000);
 };
 
 export const optimizeAnimationPerformance = () => {
+  // Skip animations in production if low-end device
+  if (process.env.NODE_ENV === 'production' && navigator.hardwareConcurrency && navigator.hardwareConcurrency < 2) {
+    document.documentElement.style.setProperty('--animation-duration', '0.1s');
+    return;
+  }
+  
   // Reduce animations on low-end devices
   if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) {
     document.documentElement.style.setProperty('--animation-duration', '0.2s');

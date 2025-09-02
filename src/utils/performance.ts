@@ -1,5 +1,12 @@
 // Performance optimization utilities
 
+// Environment-aware logging
+const log = (message: string, ...args: any[]) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(message, ...args);
+  }
+};
+
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   wait: number
@@ -53,6 +60,11 @@ export const lazyLoad = (importFunc: () => Promise<any>) => {
 // Image optimization
 export const optimizeImageUrl = (url: string, width?: number, height?: number, quality: number = 80): string => {
   if (!url) return '';
+  
+  // Skip optimization in development for faster loading
+  if (process.env.NODE_ENV === 'development' && !url.includes('cloudinary.com')) {
+    return url;
+  }
   
   // If it's a Cloudinary URL, add optimization parameters
   if (url.includes('cloudinary.com')) {

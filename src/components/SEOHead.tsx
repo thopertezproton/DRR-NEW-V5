@@ -49,6 +49,20 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       <meta name="theme-color" content="#1e3a8a" />
       <meta name="msapplication-TileColor" content="#1e3a8a" />
       <link rel="canonical" href={currentUrl} />
+      
+      {/* Production meta tags */}
+      {process.env.NODE_ENV === 'production' && (
+        <>
+          <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+          <meta name="googlebot" content="index, follow" />
+          <meta name="bingbot" content="index, follow" />
+        </>
+      )}
+      
+      {/* Development meta tags */}
+      {process.env.NODE_ENV === 'development' && (
+        <meta name="robots" content="noindex, nofollow" />
+      )}
     </Helmet>
   );
 };
